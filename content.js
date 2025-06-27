@@ -21,7 +21,7 @@ function showLogo(x, y) {
         logoDiv.style.position = 'absolute';
         logoDiv.style.zIndex = '99999';
         logoDiv.style.cursor = 'pointer';
-        logoDiv.innerHTML = `<img src="${chrome.runtime.getURL('icons/icon48.svg')}" style="width: 28px; height: 28px;">`;
+        logoDiv.innerHTML = `<img src="${chrome.runtime.getURL('icons/icon48.png')}" style="width: 28px; height: 28px;">`;
         logoDiv.style.animation = 'jelly 0.5s ease';
         const style = document.createElement('style');
         style.textContent = `
