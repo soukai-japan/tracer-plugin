@@ -1,6 +1,21 @@
 const selectedTextArea = document.getElementById('selectedText');
 const saveButton = document.getElementById('saveButton');
 
+// 动态调整 textarea 高度
+function adjustTextareaHeight() {
+    selectedTextArea.style.height = 'auto';
+    const maxHeight = 30; // 设置最大高度
+    let newHeight = selectedTextArea.scrollHeight;
+    newHeight = Math.min(newHeight, maxHeight);
+    selectedTextArea.style.height = `${newHeight}px`;
+}
+
+// 初始化 textarea 高度
+function initTextarea() {
+    adjustTextareaHeight();
+    selectedTextArea.addEventListener('input', adjustTextareaHeight);
+}
+
 let db;
 
 // Initialize IndexedDB
@@ -44,10 +59,15 @@ function saveText(text) {
 }
 
 // Get text from URL parameter
+document.addEventListener('DOMContentLoaded', () => {
+    initTextarea();
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 const textToSave = urlParams.get('text');
 if (textToSave) {
     selectedTextArea.value = decodeURIComponent(textToSave);
+    adjustTextareaHeight();
 }
 
 saveButton.addEventListener('click', async () => {
