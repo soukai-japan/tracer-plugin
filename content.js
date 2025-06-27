@@ -27,25 +27,43 @@ function showLogo(x, y) {
             const selectedText = window.getSelection().toString().trim();
             if (selectedText.length > 0) {
                 if (chrome.runtime?.id) {
-                    if (chrome.runtime?.id) {
-                    chrome.runtime.sendMessage({ action: "openSaveWindow", text: selectedText }, (response) => {
-                        if (chrome.runtime.lastError) {
-                            console.error('Message send error:', chrome.runtime.lastError);
-                        }
-                    });
-                } else {
-                    console.error('Extension context invalidated, cannot send message.');
-                }
-                } else {
-                    console.error('Extension context invalidated, cannot send message.');
-                }
+                chrome.runtime.sendMessage({ 
+                        action: "openSaveWindow", 
+                        text: selectedText, 
+                        x: x, 
+                        y: y 
+                    }, (response) => {
+                    let lastError = chrome.runtime.lastError
+                    if (lastError) {
+                        console.log(`Message send error: ${JSON.stringify(lastError)}`);
+                    }
+                    hideLogo();
+                });
+            } else {
+                console.error('Extension context invalidated, cannot send message.');
                 hideLogo();
+            }
             }
         });
         document.body.appendChild(logoDiv);
     }
-    logoDiv.style.left = `${x + 5}px`;
-    logoDiv.style.top = `${y + 5}px`;
+    const logoWidth = 16;
+    const logoHeight = 16;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    let left = x + 5;
+    let top = y + 5;
+    
+    if (left + logoWidth > windowWidth) {
+        left = windowWidth - logoWidth - 5;
+    }
+    if (top + logoHeight > windowHeight) {
+        top = windowHeight - logoHeight - 5;
+    }
+    
+    logoDiv.style.left = `${left}px`;
+    logoDiv.style.top = `${top}px`;
     logoDiv.style.display = 'block';
 }
 

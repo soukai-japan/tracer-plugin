@@ -56,7 +56,7 @@ saveButton.addEventListener('click', async () => {
         try {
             await initDb();
             await saveText(text);
-            alert('文本已保存！');
+            console.log(`Saved text in plugin: ${text}`);
             // Close the popup window after saving
             window.close();
             // Send message to content script to hide logo
@@ -72,5 +72,43 @@ saveButton.addEventListener('click', async () => {
     }
 });
 
-// If opened as a popup, initialize DB immediately
-initDb();
+// Get all saved texts from IndexedDB
+function getAllSavedTexts() {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['savedTexts'], 'readonly');
+        const store = transaction.objectStore('savedTexts');
+        const request = store.getAll();
+
+        request.onsuccess = () => {
+            resolve(request.result);
+        };
+
+        request.onerror = (event) => {
+            console.error('Error getting saved texts:', event.target.errorCode);
+            reject(event.target.errorCode);
+        };
+    });
+}
+
+// Display saved texts in a list
+async function displaySavedTexts() {
+    try {
+        const savedTexts = await getAllSavedTexts();
+        const savedList = document.getElementById('savedList');
+        savedList.innerHTML = '';
+        
+        savedTexts.forEach(textItem => {
+            const listItem = document.createElement('li');
+            const textNode = document.createTextNode(`${textItem.text} - ${new Date(textItem.timestamp).toLocaleString()}`);
+            listItem.appendChild(textNode);
+            savedList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error displaying saved texts:', error);
+    }
+}
+
+// If opened as a popup, initialize DB and display saved texts
+initDb().then(() => {
+    displaySavedTexts();
+});

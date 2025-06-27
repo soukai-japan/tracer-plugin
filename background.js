@@ -1,10 +1,19 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "openSaveWindow") {
-        chrome.windows.create({
-            url: chrome.runtime.getURL("popup.html") + `?text=${encodeURIComponent(request.text)}`,
-            type: "popup",
-            height: 200,
-            width: 400
+        chrome.windows.getCurrent((currentWindow) => {
+            const popupWidth = 400;
+            const popupHeight = 200;
+            const left = currentWindow.left + (currentWindow.width - popupWidth) / 2;
+            const top = currentWindow.top + (currentWindow.height - popupHeight) / 2;
+            
+            chrome.windows.create({
+                url: chrome.runtime.getURL("popup.html") + `?text=${encodeURIComponent(request.text)}`,
+                type: "popup",
+                height: popupHeight,
+                width: popupWidth,
+                left: Math.max(0, left),
+                top: Math.max(0, top)
+            });
         });
     }
 });

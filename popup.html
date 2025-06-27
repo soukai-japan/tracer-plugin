@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>保存文本</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 10px;
             width: 380px;
-            height: 180px;
+            height: 400px;
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+        }
+        #savedList {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        #savedList li {
+            padding: 8px;
+            margin-bottom: 5px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         textarea {
             width: 100%;
@@ -20,7 +35,7 @@
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            resize: none;
+            resize: both;
             box-sizing: border-box;
         }
         button {
@@ -41,6 +56,8 @@
 <body>
     <textarea id="selectedText" placeholder="选中的文本将显示在这里..."></textarea>
     <button id="saveButton">保存</button>
+    <h3>已保存文本：</h3>
+    <ul id="savedList"></ul>
     <script src="popup.js"></script>
 </body>
 </html>
