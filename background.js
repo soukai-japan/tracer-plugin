@@ -2,7 +2,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "openSaveWindow") {
         chrome.windows.getCurrent((currentWindow) => {
             const popupWidth = 400;
-            const popupHeight = 200;
+            const popupHeight = 500;
             const left = currentWindow.left + (currentWindow.width - popupWidth) / 2;
             const top = currentWindow.top + (currentWindow.height - popupHeight) / 2;
             

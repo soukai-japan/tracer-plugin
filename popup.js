@@ -1,10 +1,13 @@
 const selectedTextArea = document.getElementById('selectedText');
 const saveButton = document.getElementById('saveButton');
+const saveTypeSelect = document.getElementById('saveType');
+const savedList = document.getElementById('savedList');
+const savedHeader = document.querySelector('h3');
 
 // 动态调整 textarea 高度
 function adjustTextareaHeight() {
     selectedTextArea.style.height = 'auto';
-    const maxHeight = 30; // 设置最大高度
+    const maxHeight = 150; // 设置最大高度
     let newHeight = selectedTextArea.scrollHeight;
     newHeight = Math.min(newHeight, maxHeight);
     selectedTextArea.style.height = `${newHeight}px`;
@@ -45,7 +48,8 @@ function saveText(text) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction(['savedTexts'], 'readwrite');
         const store = transaction.objectStore('savedTexts');
-        const request = store.add({ text: text, timestamp: new Date().toISOString() });
+        const type = saveTypeSelect.value;
+        const request = store.add({ text: text, type: type, timestamp: new Date().toISOString() });
 
         request.onsuccess = () => {
             resolve();
@@ -68,6 +72,8 @@ const textToSave = urlParams.get('text');
 if (textToSave) {
     selectedTextArea.value = decodeURIComponent(textToSave);
     adjustTextareaHeight();
+    savedList.style.display = 'none';
+    savedHeader.style.display = 'none';
 }
 
 saveButton.addEventListener('click', async () => {
@@ -130,5 +136,7 @@ async function displaySavedTexts() {
 
 // If opened as a popup, initialize DB and display saved texts
 initDb().then(() => {
-    displaySavedTexts();
+    if (!textToSave) {
+        displaySavedTexts();
+    }
 });

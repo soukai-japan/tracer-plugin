@@ -8,7 +8,8 @@
             font-family: Arial, sans-serif;
             padding: 10px;
             width: 380px;
-            height: 400px;
+            /* height: 500px; */
+            max-height: 500px;
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
@@ -48,13 +49,34 @@
             font-size: 16px;
             align-self: flex-end;
         }
-        button:hover {
-            background-color: #45a049;
+        button:hover { 
+            background-color: #45a049; 
+        }
+        #saveType { 
+            padding: 10px; 
+            margin-bottom: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            font-family: Arial, sans-serif; 
+            background-color: white; 
+            cursor: pointer; 
+        }
+        #saveType:hover {
+            border-color: #999;
+        }
+        #saveType:focus {
+            outline: none;
+            border-color: #4CAF50;
         }
     </style>
 </head>
 <body>
-    <textarea id="selectedText" placeholder="选中的文本将显示在这里..."></textarea>
+    <textarea id="selectedText" placeholder="请输入文本"></textarea>
+    <select id="saveType">
+        <option value="word">单词</option>
+        <option value="paragraph">段落</option>
+    </select>
     <button id="saveButton">保存</button>
     <h3>已暂存文本：</h3>
     <ul id="savedList"></ul>
