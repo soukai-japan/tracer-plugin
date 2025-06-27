@@ -21,7 +21,23 @@ function showLogo(x, y) {
         logoDiv.style.position = 'absolute';
         logoDiv.style.zIndex = '99999';
         logoDiv.style.cursor = 'pointer';
-        logoDiv.innerHTML = `<img src="${chrome.runtime.getURL('icons/icon16.svg')}" style="width: 16px; height: 16px;">`;
+        logoDiv.innerHTML = `<img src="${chrome.runtime.getURL('icons/icon48.svg')}" style="width: 28px; height: 28px;">`;
+        logoDiv.style.animation = 'jelly 0.5s ease';
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes jelly {
+                0% {
+                    transform: scale(0);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(style);
         logoDiv.addEventListener('click', (e) => {
             e.stopPropagation(); // Prevent document.mousedown from closing immediately
             const selectedText = window.getSelection().toString().trim();
